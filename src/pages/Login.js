@@ -6,7 +6,7 @@ import { useTitle } from "../hooks/useTitle";
 export const Login = () => {
   const nav = useNavigate();
   const email = useRef();
-  useTitle("Login")
+  useTitle("Login");
   const password = useRef();
   async function handleLogin(e) {
     e.preventDefault();
@@ -18,9 +18,23 @@ export const Login = () => {
       const data = await login(authDetail);
       data.accessToken ? nav("/products") : toast.error(data);
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error.message);
     }
   }
+
+  const handleLoginGuest = async () => {
+    email.current.value = "darabie@gmail.com";
+    password.current.value = "123456789";
+    try {
+      const data = await login({
+        email: email.current.value,
+        password: password.current.value,
+      });
+      data.accessToken ? nav("/products") : toast.error(data);
+    } catch (error) {
+      toast.error("Error Please Register ");
+    }
+  };
   return (
     <main>
       <section>
@@ -71,7 +85,14 @@ export const Login = () => {
           Log In
         </button>
       </form>
-      {/* <button className="mt-3 cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login As Guest</button> */}
+      <div className=" w-[90%] md:w-[70%] lg:w-[60%] mx-auto">
+        <button
+          onClick={handleLoginGuest}
+          className="  mt-3 cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          Login As Guest
+        </button>
+      </div>
     </main>
   );
 };
